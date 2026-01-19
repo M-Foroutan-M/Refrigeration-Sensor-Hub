@@ -1,0 +1,6 @@
+adafruit-circuitpython-sht31d
+adafruit-circuitpython-ina219
+pyserial
+RPi.GPIO
+pynmea2
+
