@@ -9,7 +9,7 @@ GPIO.setup(DOOR_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 try:
     while True:
         state = GPIO.input(DOOR_PIN)
-        print("Door CLOSED" if state else "Door OPEN")
+        print("Door OPEN" if state else "Door CLOSED")
         time.sleep(1)
 except KeyboardInterrupt:
     GPIO.cleanup()
