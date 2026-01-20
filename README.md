@@ -52,6 +52,8 @@ cd Refrigeration-Sensor-Hub
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+# For the current state run this code to activate virtual env:
+~/sensorhub-venv/bin/activate
 ```
 
 ### 3. Install dependencies
