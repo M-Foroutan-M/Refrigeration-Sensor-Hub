@@ -40,13 +40,13 @@ while True:
         "timestamp": datetime.utcnow().isoformat(),
         "temperature_c": round(sht31.temperature, 2),
         "humidity_percent": round(sht31.relative_humidity, 2),
-        "door_state": "closed" if GPIO.input(DOOR_PIN) else "open",
+        "door_state": "open" if GPIO.input(DOOR_PIN) else "closed",
         "voltage_v": round(ina219.bus_voltage, 2),
         "current_ma": round(ina219.current, 2),
         "gps": read_gps()
     }
 
-    filename = f"data/log_{datetime.utcnow().date()}.json"
+    filename = f"../data/log_{datetime.utcnow().date()}.json"
     with open(filename, "a") as f:
         f.write(json.dumps(data) + "\n")
 
