@@ -1,0 +1,120 @@
+{"timestamp": "2026-01-21T00:15:32.118064", "temperature_c": 21.54, "humidity_percent": 40.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:15:38.153882", "temperature_c": 21.54, "humidity_percent": 40.8, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:15:44.189359", "temperature_c": 21.56, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:15:50.225056", "temperature_c": 21.54, "humidity_percent": 40.88, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:15:56.260438", "temperature_c": 21.53, "humidity_percent": 40.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:02.296153", "temperature_c": 21.53, "humidity_percent": 40.86, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:08.331178", "temperature_c": 21.56, "humidity_percent": 40.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:14.366966", "temperature_c": 21.53, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:20.401857", "temperature_c": 21.54, "humidity_percent": 40.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:26.437562", "temperature_c": 21.54, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:32.472477", "temperature_c": 21.54, "humidity_percent": 40.84, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:38.508188", "temperature_c": 21.54, "humidity_percent": 40.79, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:44.543226", "temperature_c": 21.53, "humidity_percent": 40.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:50.578903", "temperature_c": 21.54, "humidity_percent": 40.78, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:16:56.613871", "temperature_c": 21.59, "humidity_percent": 40.73, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:02.649678", "temperature_c": 21.56, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:08.684636", "temperature_c": 21.56, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:14.720309", "temperature_c": 21.57, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:20.755395", "temperature_c": 21.56, "humidity_percent": 40.79, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:26.791119", "temperature_c": 21.57, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:32.826184", "temperature_c": 21.56, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:38.862189", "temperature_c": 21.59, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:44.897497", "temperature_c": 21.59, "humidity_percent": 40.84, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:50.932894", "temperature_c": 21.57, "humidity_percent": 40.81, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:17:56.968442", "temperature_c": 21.57, "humidity_percent": 40.77, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:03.004052", "temperature_c": 21.59, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:09.039921", "temperature_c": 21.56, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:15.074847", "temperature_c": 21.6, "humidity_percent": 41.49, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:21.110485", "temperature_c": 21.66, "humidity_percent": 42.43, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:27.145397", "temperature_c": 21.62, "humidity_percent": 41.73, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:33.181103", "temperature_c": 21.63, "humidity_percent": 41.37, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:39.215992", "temperature_c": 21.63, "humidity_percent": 41.16, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:45.251724", "temperature_c": 21.63, "humidity_percent": 41.01, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:51.286754", "temperature_c": 21.64, "humidity_percent": 41.07, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:18:57.322443", "temperature_c": 21.66, "humidity_percent": 41.12, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:03.357321", "temperature_c": 21.72, "humidity_percent": 41.16, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:09.393004", "temperature_c": 21.72, "humidity_percent": 41.11, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:15.427880", "temperature_c": 21.73, "humidity_percent": 41.1, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:21.463519", "temperature_c": 21.77, "humidity_percent": 41.08, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:27.498405", "temperature_c": 21.81, "humidity_percent": 41.04, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:33.534078", "temperature_c": 21.84, "humidity_percent": 41.01, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:39.569314", "temperature_c": 21.84, "humidity_percent": 41.05, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:45.605007", "temperature_c": 21.87, "humidity_percent": 41.0, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:51.640289", "temperature_c": 21.91, "humidity_percent": 40.98, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:19:57.677762", "temperature_c": 21.97, "humidity_percent": 40.83, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:03.717352", "temperature_c": 22.0, "humidity_percent": 40.71, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:09.752901", "temperature_c": 22.03, "humidity_percent": 40.45, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:15.788703", "temperature_c": 22.05, "humidity_percent": 40.27, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:21.823633", "temperature_c": 22.09, "humidity_percent": 40.21, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:27.859343", "temperature_c": 22.08, "humidity_percent": 40.38, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:33.894348", "temperature_c": 22.14, "humidity_percent": 40.61, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:39.930165", "temperature_c": 22.18, "humidity_percent": 40.64, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:45.965077", "temperature_c": 22.22, "humidity_percent": 40.69, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:52.000821", "temperature_c": 22.24, "humidity_percent": 40.63, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:20:57.035376", "temperature_c": 22.28, "humidity_percent": 40.75, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:02.075064", "temperature_c": 22.29, "humidity_percent": 40.52, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:07.109516", "temperature_c": 22.32, "humidity_percent": 40.31, "door_state": "open", "gps": {"latitude": 52.487420666666665, "longitude": -1.88971, "fix": 1}}
+{"timestamp": "2026-01-21T00:21:12.148957", "temperature_c": 22.28, "humidity_percent": 40.3, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:17.188150", "temperature_c": 22.31, "humidity_percent": 40.2, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:22.226728", "temperature_c": 22.27, "humidity_percent": 39.86, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:27.267809", "temperature_c": 22.25, "humidity_percent": 39.82, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:32.303604", "temperature_c": 22.24, "humidity_percent": 39.83, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:37.340838", "temperature_c": 22.24, "humidity_percent": 39.87, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:42.375769", "temperature_c": 22.22, "humidity_percent": 39.95, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:47.412100", "temperature_c": 22.21, "humidity_percent": 40.0, "door_state": "open", "gps": {"latitude": 52.48741916666667, "longitude": -1.8897089999999999, "fix": 1}}
+{"timestamp": "2026-01-21T00:21:52.447267", "temperature_c": 22.19, "humidity_percent": 40.06, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:21:57.485064", "temperature_c": 22.18, "humidity_percent": 40.12, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:02.523366", "temperature_c": 22.19, "humidity_percent": 40.16, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:07.558309", "temperature_c": 22.19, "humidity_percent": 40.18, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:12.600037", "temperature_c": 22.19, "humidity_percent": 40.15, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:17.638002", "temperature_c": 22.14, "humidity_percent": 40.16, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:22.679509", "temperature_c": 22.15, "humidity_percent": 40.14, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:27.717172", "temperature_c": 22.14, "humidity_percent": 40.14, "door_state": "open", "gps": {"latitude": 52.48741916666667, "longitude": -1.8897439999999999, "fix": 1}}
+{"timestamp": "2026-01-21T00:22:32.759498", "temperature_c": 22.14, "humidity_percent": 40.11, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:37.800028", "temperature_c": 22.14, "humidity_percent": 39.98, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:42.838093", "temperature_c": 22.11, "humidity_percent": 39.95, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:47.879463", "temperature_c": 22.11, "humidity_percent": 39.92, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:52.917623", "temperature_c": 22.07, "humidity_percent": 39.87, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:22:57.958355", "temperature_c": 22.04, "humidity_percent": 39.95, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:23:02.993321", "temperature_c": 22.05, "humidity_percent": 39.97, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:23:08.029709", "temperature_c": 22.01, "humidity_percent": 40.04, "door_state": "open", "gps": {"latitude": 52.487416333333336, "longitude": -1.8897205, "fix": 1}}
+{"timestamp": "2026-01-21T00:23:13.071281", "temperature_c": 22.0, "humidity_percent": 40.04, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T00:23:18.110734", "temperature_c": 22.01, "humidity_percent": 40.12, "door_state": "open", "gps": {}}
+{"timestamp": "2026-01-21T13:26:55.184604+00:00", "temperature_c": 20.74, "humidity_percent": 45.1, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:27:00.219971+00:00", "temperature_c": 20.77, "humidity_percent": 44.96, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:27:05.254481+00:00", "temperature_c": 20.76, "humidity_percent": 44.91, "door_open": false, "gps": {"latitude": 52.4866355, "longitude": -1.8907356666666666, "altitude_m": 183.9, "fix": true}}
+{"timestamp": "2026-01-21T13:27:10.288316+00:00", "temperature_c": 20.77, "humidity_percent": 44.94, "door_open": false, "gps": {"latitude": 52.4866385, "longitude": -1.8906753333333333, "altitude_m": 180.2, "fix": true}}
+{"timestamp": "2026-01-21T13:27:15.322911+00:00", "temperature_c": 20.76, "humidity_percent": 44.9, "door_open": false, "gps": {"latitude": 52.48663666666667, "longitude": -1.8906328333333333, "altitude_m": 178.2, "fix": true}}
+{"timestamp": "2026-01-21T13:27:20.356749+00:00", "temperature_c": 20.78, "humidity_percent": 44.91, "door_open": false, "gps": {"latitude": 52.486696333333335, "longitude": -1.8906173333333334, "altitude_m": 178.3, "fix": true}}
+{"timestamp": "2026-01-21T13:27:25.391144+00:00", "temperature_c": 20.76, "humidity_percent": 45.01, "door_open": false, "gps": {"latitude": 52.4868175, "longitude": -1.8904623333333332, "altitude_m": 178.1, "fix": true}}
+{"timestamp": "2026-01-21T13:27:30.425945+00:00", "temperature_c": 20.8, "humidity_percent": 45.01, "door_open": false, "gps": {"latitude": 52.48686683333333, "longitude": -1.8903738333333333, "altitude_m": 178.0, "fix": true}}
+{"timestamp": "2026-01-21T13:48:29.877678+00:00", "temperature_c": 20.66, "humidity_percent": 45.24, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:48:34.911954+00:00", "temperature_c": 20.68, "humidity_percent": 45.17, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:48:39.946562+00:00", "temperature_c": 20.7, "humidity_percent": 45.22, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:48:44.981212+00:00", "temperature_c": 20.67, "humidity_percent": 45.24, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:48:50.015111+00:00", "temperature_c": 20.67, "humidity_percent": 45.21, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:48:55.049789+00:00", "temperature_c": 20.7, "humidity_percent": 46.21, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:00.083555+00:00", "temperature_c": 20.74, "humidity_percent": 51.2, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:05.118144+00:00", "temperature_c": 20.78, "humidity_percent": 51.25, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:10.155934+00:00", "temperature_c": 20.81, "humidity_percent": 51.77, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:15.189747+00:00", "temperature_c": 20.98, "humidity_percent": 56.71, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:20.224173+00:00", "temperature_c": 20.98, "humidity_percent": 56.09, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:25.258018+00:00", "temperature_c": 20.99, "humidity_percent": 53.46, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:30.292475+00:00", "temperature_c": 21.01, "humidity_percent": 50.91, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:35.326834+00:00", "temperature_c": 21.01, "humidity_percent": 49.44, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:49:40.361230+00:00", "temperature_c": 20.98, "humidity_percent": 48.38, "door_open": false, "gps": {"latitude": 52.48686766666667, "longitude": -1.8902195000000002, "altitude_m": 135.8, "fix": true}}
+{"timestamp": "2026-01-21T13:49:45.395642+00:00", "temperature_c": 21.01, "humidity_percent": 47.68, "door_open": false, "gps": {"latitude": 52.486884333333336, "longitude": -1.8901810000000001, "altitude_m": 134.4, "fix": true}}
+{"timestamp": "2026-01-21T13:49:50.429403+00:00", "temperature_c": 21.01, "humidity_percent": 47.14, "door_open": false, "gps": {"latitude": 52.48690883333333, "longitude": -1.8901376666666665, "altitude_m": 133.4, "fix": true}}
+{"timestamp": "2026-01-21T13:49:55.463862+00:00", "temperature_c": 20.98, "humidity_percent": 46.92, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:50:00.497633+00:00", "temperature_c": 20.97, "humidity_percent": 46.72, "door_open": false, "gps": {"latitude": 52.486913666666666, "longitude": -1.8902041666666667, "altitude_m": 133.0, "fix": true}}
+{"timestamp": "2026-01-21T13:50:05.532130+00:00", "temperature_c": 20.99, "humidity_percent": 46.46, "door_open": false, "gps": {"latitude": 52.486916666666666, "longitude": -1.8902308333333333, "altitude_m": 134.5, "fix": true}}
+{"timestamp": "2026-01-21T13:50:10.565986+00:00", "temperature_c": 20.97, "humidity_percent": 46.42, "door_open": false, "gps": {"latitude": 52.4869195, "longitude": -1.8902643333333333, "altitude_m": 134.8, "fix": true}}
+{"timestamp": "2026-01-21T13:50:15.600436+00:00", "temperature_c": 20.97, "humidity_percent": 46.23, "door_open": false, "gps": {"latitude": 52.486906166666664, "longitude": -1.8903366666666668, "altitude_m": 135.3, "fix": true}}
+{"timestamp": "2026-01-21T13:50:20.634242+00:00", "temperature_c": 20.95, "humidity_percent": 46.14, "door_open": false, "gps": {"latitude": 52.4869065, "longitude": -1.8903516666666667, "altitude_m": 136.9, "fix": true}}
+{"timestamp": "2026-01-21T13:50:25.668434+00:00", "temperature_c": 20.95, "humidity_percent": 46.13, "door_open": false, "gps": {"latitude": 52.486906, "longitude": -1.8903685000000001, "altitude_m": 138.9, "fix": true}}
+{"timestamp": "2026-01-21T13:50:30.702293+00:00", "temperature_c": 20.95, "humidity_percent": 46.24, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:50:35.736907+00:00", "temperature_c": 20.94, "humidity_percent": 46.16, "door_open": false, "gps": {"latitude": null, "longitude": null, "altitude_m": null, "fix": false}}
+{"timestamp": "2026-01-21T13:50:40.771421+00:00", "temperature_c": 20.91, "humidity_percent": 46.05, "door_open": false, "gps": {"latitude": 52.4869335, "longitude": -1.8902999999999999, "altitude_m": 142.6, "fix": true}}
+{"timestamp": "2026-01-21T13:50:45.805223+00:00", "temperature_c": 20.91, "humidity_percent": 45.89, "door_open": false, "gps": {"latitude": 52.486966, "longitude": -1.8902013333333334, "altitude_m": 146.1, "fix": true}}
+{"timestamp": "2026-01-21T13:50:50.839590+00:00", "temperature_c": 20.91, "humidity_percent": 45.85, "door_open": false, "gps": {"latitude": 52.48696566666667, "longitude": -1.8902065000000001, "altitude_m": 148.9, "fix": true}}
