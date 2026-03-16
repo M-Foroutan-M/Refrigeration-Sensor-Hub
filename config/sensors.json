@@ -1,0 +1,34 @@
+{
+  "door_sensor": {
+    "enabled": true,
+    "gpio_pin": 17,
+    "pull_up": true
+  },
+  "inside_sht31": {
+    "enabled": true,
+    "i2c_address": "0x44"
+  },
+  "gps": {
+    "enabled": true,
+    "port": "/dev/serial0",
+    "baudrate": 9600,
+    "timeout_sec": 1
+  },
+  "onewire": {
+    "enabled": false,
+    "gpio_pin": 4,
+    "device_ids": []
+  },
+  "weather_sht31": {
+    "enabled": false,
+    "i2c_address": "0x45"
+  },
+  "uv_sensor": {
+    "enabled": false
+  },
+  "power_sensor": {
+    "enabled": false,
+    "type": "ina219",
+    "i2c_address": "0x40"
+  }
+}

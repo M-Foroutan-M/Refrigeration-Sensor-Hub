@@ -1,0 +1,13 @@
+{
+  "sample_interval_sec": 5,
+  "upload_interval_sec": 30,
+  "route_interval_sec": 180,
+  "data_dir": "/home/pi/Refrigeration-Sensor-Hub/data/raw",
+  "uploaded_dir": "/home/pi/Refrigeration-Sensor-Hub/data/uploaded",
+  "log_file": "/home/pi/Refrigeration-Sensor-Hub/logs/sensorhub.log",
+  "route_enabled": true,
+  "weather_enabled": false,
+  "drive_upload_enabled": false,
+  "mission_file": "/home/pi/Refrigeration-Sensor-Hub/config/mission.json",
+  "sensors_file": "/home/pi/Refrigeration-Sensor-Hub/config/sensors.json"
+}
