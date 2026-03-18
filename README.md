@@ -45,7 +45,7 @@ Sensors:
 ## Software Architecture
 
 The system follows a modular service-based architecture:
-'''
+```
 src/
 ├── main.py
 ├── sensors/
@@ -66,7 +66,7 @@ src/
 │   ├── file_utils.py
 │   ├── time_utils.py
 │   └── config_utils.py
-'''
+```
 ---
 
 ## Installation and Setup
