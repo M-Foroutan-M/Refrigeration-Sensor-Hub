@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project implements a Raspberry Pi–based multi-sensor data acquisition system designed to collect environmental, positional, electrical, and state-based data in a structured and extensible manner. The system integrates multiple sensors using standard digital interfaces and logs synchronized data locally in JSON format for later analysis or transmission.
+This project implements a modular, embedded IoT system designed for deployment inside a refrigerated transport van. The system continuously collects environmental, positional, and operational data, stores it locally, and synchronizes it with the cloud.
 
 The architecture prioritizes modularity, reproducibility, and headless operation, making it suitable for embedded sensing platforms, mobile robots, and remote monitoring applications.
 
@@ -10,31 +10,62 @@ The architecture prioritizes modularity, reproducibility, and headless operation
 
 ## System Features
 
-* Concurrent acquisition of multiple sensor modalities
-* Support for I2C, UART, GPIO, and USB interfaces
-* Timestamped data logging in JSON format
-* Modular software structure for easy extension
-* Ethernet-based secure file transfer (SFTP)
-* Prepared for future cellular (4G) connectivity
+
+* Multi-sensor data acquisition (temperature, humidity, GPS, door state, weather condition)
+* Timestamped JSON logging with date-based file structure
+* Robust 4G connectivity using SIM7600 (with fallback logic)
+* Automated data upload to cloud (Google Drive)
+* Route estimation for mission-aware decision making
+* Modular software architecture (sensors / services / utils)
+* Headless operation with systemd auto-start
+* Designed for real-world deployment (vehicle, vibration, signal loss)
 
 ---
 
-## Integrated Sensors and Modules
+## Hardware Setup
 
-* **Temperature and Humidity Sensor (SHT31 – I2C)**
-* **Magnetic Contact Door Sensor (GPIO)**
-* **GPS Module (UART / NMEA)**
-* **Current and Voltage Sensor (INA219 – I2C)**
-* **External 3-Meter Temperature Probe (Digital)**
-* **USB 4G LTE Modem (Connectivity readiness)**
+Core Platform:
+* Raspberry Pi 4 (Raspberry Pi OS Lite, headless)
+
+Connectivity:
+* SIM7600G-H 4G LTE USB modem (giffgaff SIM)
+
+Sensors:
+* SHT31 (I2C) → internal temperature & humidity
+* GPS module (UART, NMEA)
+* Door sensor (GPIO, magnetic contact)
+* Sensors (Planned / Future)
+* DS18B20 (1-Wire temperature probes)
+* External SHT31 (weather station)
+* PYR20 Pyranometer (UV radiation, weather station)
+* INA219 (power monitoring)
 
 ---
 
-## Hardware Platform
+## Software Architecture
 
-* Raspberry Pi 4 Model B
-* Raspberry Pi OS Lite (64-bit, Debian-based)
-* Headless configuration (SSH enabled)
+The system follows a modular service-based architecture:
+
+src/
+├── main.py
+├── sensors/
+│   ├── sht31_sensor.py
+│   ├── gps_sensor.py
+│   ├── door_sensor.py
+│   ├── onewire_sensor.py
+│   ├── weather_sht31_sensor.py
+│   ├── uv_sensor.py
+│   └── power_sensor.py
+├── services/
+│   ├── logger_service.py
+│   ├── uploader_service.py
+│   ├── route_service.py
+│   ├── mission_service.py
+│   └── state_service.py
+├── utils/
+│   ├── file_utils.py
+│   ├── time_utils.py
+│   └── config_utils.py
 
 ---
 
