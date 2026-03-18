@@ -157,8 +157,7 @@ Each line is a JSON object:
 
 The system uses a layered Linux networking stack:
 ```
-Netplan → NetworkManager → ModemManager → SIM7600 → 4G Network
-Interfaces
+Netplan → NetworkManager → ModemManager → SIM7600 → 4G Network Interfaces
 ```
 
 * eth0 → Ethernet
