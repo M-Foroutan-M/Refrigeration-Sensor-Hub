@@ -83,8 +83,9 @@ config/
 ├── app_config.json
 ├── mission.json
 ├── sensors.json
-app_config.json
 ```
+
+app_config.json
 
 Controls:
 
