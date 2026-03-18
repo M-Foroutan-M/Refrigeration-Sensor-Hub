@@ -10,36 +10,41 @@ The architecture prioritizes modularity, reproducibility, and headless operation
 
 ## System Features
 
-
-* Multi-sensor data acquisition (temperature, humidity, GPS, door state, weather condition)
-* Timestamped JSON logging with date-based file structure
-* Robust 4G connectivity using SIM7600 (with fallback logic)
-* Automated data upload to cloud (Google Drive)
-* Route estimation for mission-aware decision making
-* Modular software architecture (sensors / services / utils)
-* Headless operation with systemd auto-start
-* Designed for real-world deployment (vehicle, vibration, signal loss)
-
+```
+Multi-sensor data acquisition (temperature, humidity, GPS, door state, weather condition)
+Timestamped JSON logging with date-based file structure
+Robust 4G connectivity using SIM7600 (with fallback logic)
+Automated data upload to cloud (Google Drive)
+Route estimation for mission-aware decision making
+Modular software architecture (sensors / services / utils)
+Headless operation with systemd auto-start
+Designed for real-world deployment (vehicle, vibration, signal loss)
+```
 ---
 
 ## Hardware Setup
 
 Core Platform:
-* Raspberry Pi 4 (Raspberry Pi OS Lite, headless)
+```
+Raspberry Pi 4 (Raspberry Pi OS Lite, headless)
+```
 
 Connectivity:
-* SIM7600G-H 4G LTE USB modem (giffgaff SIM)
+```
+SIM7600G-H 4G LTE USB modem (giffgaff SIM)
+```
 
 Sensors:
-* SHT31 (I2C) → internal temperature & humidity
-* GPS module (UART, NMEA)
-* Door sensor (GPIO, magnetic contact)
-* Sensors (Planned / Future)
-* DS18B20 (1-Wire temperature probes)
-* External SHT31 (weather station)
-* PYR20 Pyranometer (UV radiation, weather station)
-* INA219 (power monitoring)
-
+```
+SHT31 (I2C) → internal temperature & humidity
+GPS module (UART, NMEA)
+Door sensor (GPIO, magnetic contact)
+Sensors (Planned / Future)
+DS18B20 (1-Wire temperature probes)
+External SHT31 (weather station)
+PYR20 Pyranometer (UV radiation, weather station)
+INA219 (power monitoring)
+```
 ---
 
 ## Software Architecture
