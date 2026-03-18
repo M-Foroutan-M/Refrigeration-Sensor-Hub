@@ -122,10 +122,26 @@ Controls:
 * power
 * weather data
 
+---
 
+## Local Storage (Offline-first)
 
+Data is stored as:
+```
+data/raw/log_YYYY-MM-DD.json
+```
 
-
+Each line is a JSON object:
+```
+{
+  "timestamp": "...",
+  "temperature_c": 4.5,
+  "humidity_percent": 82.1,
+  "door_open": false,
+  "gps": {...},
+  "route": {...}
+}
+```
 
 
 
