@@ -114,7 +114,7 @@ Controls:
 ### Sampling
 
 * Sensors are sampled every 5 seconds
-Data includes:
+#### Data includes:
 * timestamp (UTC)
 * temperature & humidity
 * door state
