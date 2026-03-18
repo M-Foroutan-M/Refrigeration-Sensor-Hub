@@ -142,8 +142,40 @@ Each line is a JSON object:
   "route": {...}
 }
 ```
+---
 
+### Cloud Sync
 
+* Runs every 30 seconds
+* Uploads new data to Google Drive
+* Non-blocking design (system continues logging if offline)
+* Uses retry and recovery logic
+
+---
+
+### Networking Architecture
+
+The system uses a layered Linux networking stack:
+```
+Netplan → NetworkManager → ModemManager → SIM7600 → 4G Network
+Interfaces
+```
+
+* eth0 → Ethernet
+* wlan0 → Wi-Fi
+* wwan0 → 4G data interface
+
+#### Key Characteristics
+
+* 4G (giffgaff) configured as primary connection
+* Ethernet acts as fallback when configured
+* Auto-reconnect enabled
+* Watchdog script ensures recovery from connection loss
+
+#### Configuration Location
+```
+/etc/NetworkManager/system-connections/
+```
 
 ---
 
@@ -172,7 +204,30 @@ pip install -r requirements.txt
 ```
 ---
 
+## Running the System
+```bash
+python src/main.py
+```
+---
+
+### Auto-Start
+
+A systemd service is provided:
+```
+services/sensorhub.service
+```
+Install:
+```bash
+sudo bash scripts/install_service.sh
+```
+---
+
 ## Author
 
 Mohammad (Farhad) Foroutan
 Aston University
+
+### Notes
+
+This project is designed as a real-world embedded system, not a prototype script.
+All components are built with deployment, reliability, and scalability in mind.
