@@ -92,38 +92,6 @@ source ~/sensorhub-venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-
----
-
-## Running the System
-
-To run the **full multi-sensor data acquisition system**:
-
-```bash
-python src/system_logger.py
-```
-
-JSON log files will be generated in the `data/` directory.
-
----
-
-## Data Output Format
-
-Each record is stored in JSON format and includes:
-
-* UTC timestamp
-* Temperature and humidity
-* Door open/closed state
-* GPS coordinates and fix status
-* System current and voltage readings (# Will be generated according to the future harware setup)
-
----
-
-## Version Control and Documentation
-
-This repository serves as the **software backbone** of the project.
-For detailed implementation history, configuration steps, and updates, refer to this GitHub repository.
-
 ---
 
 ## Author
