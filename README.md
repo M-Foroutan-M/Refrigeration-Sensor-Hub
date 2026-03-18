@@ -107,7 +107,20 @@ Controls:
 * sensor enable/disable
 * hardware configuration (GPIO, I2C, UART)
 
+---
 
+## Data Pipeline
+
+### Sampling
+
+* Sensors are sampled every 5 seconds
+Data includes:
+* timestamp (UTC)
+* temperature & humidity
+* door state
+* GPS position & fix status
+* power
+* weather data
 
 
 
