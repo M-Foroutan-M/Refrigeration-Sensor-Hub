@@ -74,6 +74,49 @@ src/
 ```
 ---
 
+## Configuration
+
+Located in:
+
+```
+config/
+├── app_config.json
+├── mission.json
+├── sensors.json
+app_config.json
+```
+
+Controls:
+
+* sampling interval
+* upload interval
+* route estimation interval
+* feature toggles (route, weather, upload)
+* file paths
+
+mission.json:
+
+* mission ID
+* van ID
+* route destinations
+* runtime mission state
+
+sensors.json:
+
+* sensor enable/disable
+* hardware configuration (GPIO, I2C, UART)
+
+
+
+
+
+
+
+
+
+
+---
+
 ## Installation and Setup
 
 ### 1. Clone the repository
