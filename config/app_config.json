@@ -8,6 +8,7 @@
   "route_enabled": true,
   "weather_enabled": false,
   "drive_upload_enabled": false,
+  "drive_remote_name": "gdrive_sensorhub",
   "mission_file": "/home/pi/Refrigeration-Sensor-Hub/config/mission.json",
   "sensors_file": "/home/pi/Refrigeration-Sensor-Hub/config/sensors.json"
 }
