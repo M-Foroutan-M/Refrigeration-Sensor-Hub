@@ -11,6 +11,8 @@ from utils.time_utils import utc_now_iso
 from utils.app_logging import setup_app_logger
 from services.logger_service import JsonLineLogger
 from services.uploader_service import UploaderService
+from services.mission_service import MissionService
+from services.route_service import RouteService
 from sensors.door_sensor import DoorSensor
 from sensors.sht31_sensor import SHT31Sensor
 from sensors.gps_sensor import GPSSensor
@@ -57,16 +59,16 @@ def safe_read_gps(gps_sensor, logger) -> Dict[str, Any]:
 
 
 def build_record(
-    mission_config,
+    mission_service,
     door_sensor,
     inside_sht31_sensor,
-    gps_sensor,
+    gps_data,
     logger,
+    latest_route,
     weather_sht31_sensor=None,
 ):
     door_open = safe_read_door(door_sensor, logger)
     inside_data = safe_read_sht31(inside_sht31_sensor, logger, "Inside")
-    gps_data = safe_read_gps(gps_sensor, logger)
 
     weather_data = None
     if weather_sht31_sensor is not None:
@@ -74,15 +76,15 @@ def build_record(
 
     record = {
         "timestamp": utc_now_iso(),
-        "mission_id": mission_config.get("mission_id"),
-        "van_id": mission_config.get("van_id"),
+        "mission_id": mission_service.get_mission_id(),
+        "van_id": mission_service.get_van_id(),
         "inside": {
             "temperature_c": inside_data["temperature_c"],
             "humidity_percent": inside_data["humidity_percent"],
         },
         "door_open": door_open,
         "gps": gps_data,
-        "route": None,
+        "route": latest_route,
         "weather_station": weather_data,
         "power": None,
     }
@@ -100,9 +102,8 @@ def main():
     logger.info("Starting Refrigeration Sensor Hub")
 
     sample_interval = app_config["sample_interval_sec"]
-    data_dir = app_config["data_dir"]
 
-    json_logger = JsonLineLogger(data_dir=data_dir)
+    json_logger = JsonLineLogger(data_dir=app_config["data_dir"])
 
     uploader = UploaderService(
         data_dir=app_config["data_dir"],
@@ -110,6 +111,14 @@ def main():
         upload_interval_sec=app_config["upload_interval_sec"],
         logger=logger,
         enabled=app_config.get("drive_upload_enabled", False),
+    )
+
+    mission_service = MissionService(mission_config)
+
+    route_service = RouteService(
+        logger=logger,
+        route_interval_sec=app_config.get("route_interval_sec", 180),
+        movement_threshold_meters=300.0,
     )
 
     door_cfg = sensors_config["door_sensor"]
@@ -161,12 +170,27 @@ def main():
             cycle_start = time.time()
 
             try:
+                gps_data = safe_read_gps(gps_sensor, logger)
+
+                if route_service.should_update(
+                    gps_data=gps_data,
+                    route_enabled=mission_service.route_enabled(),
+                    destinations=mission_service.get_destinations(),
+                ):
+                    route_service.update_route(
+                        gps_data=gps_data,
+                        destinations=mission_service.get_destinations(),
+                    )
+
+                latest_route = route_service.get_latest_route()
+
                 record = build_record(
-                    mission_config=mission_config,
+                    mission_service=mission_service,
                     door_sensor=door_sensor,
                     inside_sht31_sensor=inside_sht31_sensor,
-                    gps_sensor=gps_sensor,
+                    gps_data=gps_data,
                     logger=logger,
+                    latest_route=latest_route,
                     weather_sht31_sensor=weather_sht31_sensor,
                 )
 
