@@ -1,5 +1,6 @@
 import time
 from pathlib import Path
+from typing import Optional, Dict, Any
 
 from utils.config_utils import (
     load_app_config,
@@ -7,6 +8,7 @@ from utils.config_utils import (
     load_sensors_config,
 )
 from utils.time_utils import utc_now_iso
+from utils.app_logging import setup_app_logger
 from services.logger_service import JsonLineLogger
 from sensors.door_sensor import DoorSensor
 from sensors.sht31_sensor import SHT31Sensor
@@ -21,20 +23,53 @@ def hex_to_int(address_value):
     raise ValueError(f"Unsupported I2C address format: {address_value}")
 
 
+def safe_read_door(door_sensor, logger) -> Optional[bool]:
+    try:
+        return door_sensor.read()
+    except Exception as e:
+        logger.warning(f"Door sensor read failed: {e}")
+        return None
+
+
+def safe_read_sht31(sensor, logger, label: str) -> Dict[str, Optional[float]]:
+    try:
+        return sensor.read()
+    except Exception as e:
+        logger.warning(f"{label} SHT31 read failed: {e}")
+        return {
+            "temperature_c": None,
+            "humidity_percent": None,
+        }
+
+
+def safe_read_gps(gps_sensor, logger) -> Dict[str, Any]:
+    try:
+        return gps_sensor.read()
+    except Exception as e:
+        logger.warning(f"GPS read failed: {e}")
+        return {
+            "latitude": None,
+            "longitude": None,
+            "altitude_m": None,
+            "fix": False,
+        }
+
+
 def build_record(
     mission_config,
     door_sensor,
     inside_sht31_sensor,
     gps_sensor,
+    logger,
     weather_sht31_sensor=None,
 ):
-    door_open = door_sensor.read()
-    inside_data = inside_sht31_sensor.read()
-    gps_data = gps_sensor.read()
+    door_open = safe_read_door(door_sensor, logger)
+    inside_data = safe_read_sht31(inside_sht31_sensor, logger, "Inside")
+    gps_data = safe_read_gps(gps_sensor, logger)
 
     weather_data = None
     if weather_sht31_sensor is not None:
-        weather_data = weather_sht31_sensor.read()
+        weather_data = safe_read_sht31(weather_sht31_sensor, logger, "Weather station")
 
     record = {
         "timestamp": utc_now_iso(),
@@ -60,10 +95,13 @@ def main():
     mission_config = load_mission_config(app_config["mission_file"])
     sensors_config = load_sensors_config(app_config["sensors_file"])
 
+    logger = setup_app_logger(app_config["log_file"])
+    logger.info("Starting Refrigeration Sensor Hub")
+
     sample_interval = app_config["sample_interval_sec"]
     data_dir = app_config["data_dir"]
 
-    logger = JsonLineLogger(data_dir=data_dir)
+    json_logger = JsonLineLogger(data_dir=data_dir)
 
     door_cfg = sensors_config["door_sensor"]
     inside_sht31_cfg = sensors_config["inside_sht31"]
@@ -98,37 +136,52 @@ def main():
             i2c_address=hex_to_int(weather_sht31_cfg.get("i2c_address", "0x45"))
         )
 
-    print("Initializing sensors...")
+    logger.info("Initializing sensors...")
     door_sensor.initialize()
     inside_sht31_sensor.initialize()
     gps_sensor.initialize()
 
     if weather_sht31_sensor is not None:
         weather_sht31_sensor.initialize()
+        logger.info("Weather station SHT31 initialized")
 
-    print("Sensors initialized. Starting main loop...")
+    logger.info("Sensors initialized. Entering main loop.")
 
     try:
         while True:
-            record = build_record(
-                mission_config=mission_config,
-                door_sensor=door_sensor,
-                inside_sht31_sensor=inside_sht31_sensor,
-                gps_sensor=gps_sensor,
-                weather_sht31_sensor=weather_sht31_sensor,
-            )
+            try:
+                record = build_record(
+                    mission_config=mission_config,
+                    door_sensor=door_sensor,
+                    inside_sht31_sensor=inside_sht31_sensor,
+                    gps_sensor=gps_sensor,
+                    logger=logger,
+                    weather_sht31_sensor=weather_sht31_sensor,
+                )
 
-            logger.write_record(record)
-            print(record)
+                json_logger.write_record(record)
+                logger.info(f"Record logged: {record}")
+
+            except Exception as cycle_error:
+                logger.exception(f"Unexpected error in acquisition cycle: {cycle_error}")
 
             time.sleep(sample_interval)
 
     except KeyboardInterrupt:
-        print("\nStopping sensor hub...")
+        logger.info("Stopping sensor hub due to keyboard interrupt")
 
     finally:
-        gps_sensor.stop()
-        door_sensor.cleanup()
+        try:
+            gps_sensor.stop()
+        except Exception:
+            pass
+
+        try:
+            door_sensor.cleanup()
+        except Exception:
+            pass
+
+        logger.info("Sensor hub stopped cleanly")
 
 
 if __name__ == "__main__":
