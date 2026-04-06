@@ -10,6 +10,7 @@ from utils.config_utils import (
 from utils.time_utils import utc_now_iso
 from utils.app_logging import setup_app_logger
 from services.logger_service import JsonLineLogger
+from services.uploader_service import UploaderService
 from sensors.door_sensor import DoorSensor
 from sensors.sht31_sensor import SHT31Sensor
 from sensors.gps_sensor import GPSSensor
@@ -103,6 +104,14 @@ def main():
 
     json_logger = JsonLineLogger(data_dir=data_dir)
 
+    uploader = UploaderService(
+        data_dir=app_config["data_dir"],
+        remote_name=app_config.get("drive_remote_name", "gdrive_sensorhub"),
+        upload_interval_sec=app_config["upload_interval_sec"],
+        logger=logger,
+        enabled=app_config.get("drive_upload_enabled", False),
+    )
+
     door_cfg = sensors_config["door_sensor"]
     inside_sht31_cfg = sensors_config["inside_sht31"]
     gps_cfg = sensors_config["gps"]
@@ -149,6 +158,8 @@ def main():
 
     try:
         while True:
+            cycle_start = time.time()
+
             try:
                 record = build_record(
                     mission_config=mission_config,
@@ -162,10 +173,15 @@ def main():
                 json_logger.write_record(record)
                 logger.info(f"Record logged: {record}")
 
+                if uploader.should_upload():
+                    uploader.upload_once()
+
             except Exception as cycle_error:
                 logger.exception(f"Unexpected error in acquisition cycle: {cycle_error}")
 
-            time.sleep(sample_interval)
+            elapsed = time.time() - cycle_start
+            sleep_time = max(0, sample_interval - elapsed)
+            time.sleep(sleep_time)
 
     except KeyboardInterrupt:
         logger.info("Stopping sensor hub due to keyboard interrupt")
