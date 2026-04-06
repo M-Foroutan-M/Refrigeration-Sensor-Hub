@@ -1,0 +1,19 @@
+[Unit]
+Description=Refrigeration Sensor Hub
+After=network-online.target NetworkManager.service ModemManager.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Refrigeration-Sensor-Hub
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/home/pi/sensorhub-venv/bin/python /home/pi/Refrigeration-Sensor-Hub/src/main.py
+Restart=always
+RestartSec=10
+
+# Optional environment file for API keys and secrets
+EnvironmentFile=-/home/pi/Refrigeration-Sensor-Hub/.env
+
+[Install]
+WantedBy=multi-user.target
