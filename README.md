@@ -1,232 +1,538 @@
 # Refrigeration-Sensor-Hub
 
-## Project Overview
+## Overview
 
-This project implements a modular, embedded IoT system designed for deployment inside a refrigerated transport van. The system continuously collects environmental, positional, and operational data, stores it locally, and synchronizes it with the cloud.
+Refrigeration-Sensor-Hub is a modular embedded IoT edge platform designed for deployment inside refrigerated transport vehicles.
 
-The architecture prioritizes modularity, reproducibility, and headless operation, making it suitable for embedded sensing platforms, mobile robots, and remote monitoring applications.
+The system continuously acquires environmental, mission, and positional telemetry from the vehicle, stores structured timestamped data locally, and synchronizes records to cloud storage over a resilient 4G connection.
+
+The architecture is designed for real-world field deployment, prioritizing:
+
+- offline-first operation
+- autonomous recovery
+- modular extensibility
+- mission-aware routing intelligence
+- headless unattended execution
+- future refrigeration energy optimization
+
+This is not a prototype script collection; it is a structured deployable embedded monitoring platform.
 
 ---
 
-## System Features
+# System Objectives
 
-```
-Multi-sensor data acquisition (temperature, humidity, GPS, door state, weather condition)
-Timestamped JSON logging with date-based file structure
-Robust 4G connectivity using SIM7600 (with fallback logic)
-Automated data upload to cloud (Google Drive)
-Route estimation for mission-aware decision making
-Modular software architecture (sensors / services / utils)
-Headless operation with systemd auto-start
-Designed for real-world deployment (vehicle, vibration, signal loss)
-```
+Current operational objectives:
+
+- Monitor refrigerated compartment conditions
+- Monitor external weather conditions
+- Track vehicle position and GPS fix status
+- Detect door open/close state
+- Estimate mission route progress and ETA
+- Log all telemetry locally in structured JSON
+- Synchronize data to cloud storage every 30 seconds
+- Operate autonomously after power-on
+- Remain functional during internet outages
+
+Future objectives:
+
+- Battery monitoring
+- solar PV monitoring
+- refrigeration compressor telemetry
+- cloud-to-edge command/control
+- refrigeration load optimization
+- predictive energy-aware control
+
 ---
 
-## Hardware Setup
+# Hardware Platform
 
-Core Platform:
-```
-Raspberry Pi 4 (Raspberry Pi OS Lite, headless)
-```
+## Core Platform
 
-Connectivity:
-```
-SIM7600G-H 4G LTE USB modem (giffgaff SIM)
+```text
+Raspberry Pi 4 Model B
+Raspberry Pi OS Lite (headless)
 ```
 
-Sensors:
-```
-SHT31 (I2C) → internal temperature & humidity
-GPS module (UART, NMEA)
-Door sensor (GPIO, magnetic contact)
-Sensors (Planned / Future)
-DS18B20 (1-Wire temperature probes)
-External SHT31 (weather station)
-PYR20 Pyranometer (UV radiation, weather station)
-INA219 (power monitoring)
-```
 ---
 
-## Software Architecture
+## Connectivity
 
-The system follows a modular service-based architecture:
+```text
+SIM7600G-H 4G LTE USB modem
+giffgaff SIM
+Ethernet fallback support
+Wi-Fi management support
 ```
+
+---
+
+## Active Sensors
+
+### Internal Refrigeration Monitoring
+
+```text
+SHT31
+I2C
+Temperature + Humidity
+```
+
+---
+
+### Vehicle Positioning
+
+```text
+GPS module
+UART / NMEA
+```
+
+---
+
+### Door State Monitoring
+
+```text
+Magnetic contact sensor
+GPIO
+```
+
+---
+
+### External Weather Station
+
+```text
+External SHT31
+I2C
+Temperature + Humidity
+```
+
+```text
+PYR20 Pyranometer
+Solar / UV radiation
+```
+
+---
+
+## Planned Sensors
+
+```text
+DS18B20 1-Wire temperature probes
+INA219 power monitoring
+Battery telemetry
+Solar PV telemetry
+Cooling compressor telemetry
+```
+
+---
+
+# Software Architecture
+
+```text
 src/
 ├── main.py
+│
 ├── sensors/
-│   ├── sht31_sensor.py
-│   ├── gps_sensor.py
 │   ├── door_sensor.py
-│   ├── onewire_sensor.py
+│   ├── gps_sensor.py
+│   ├── sht31_sensor.py
 │   ├── weather_sht31_sensor.py
 │   ├── uv_sensor.py
+│   ├── onewire_sensor.py
 │   └── power_sensor.py
+│
 ├── services/
 │   ├── logger_service.py
 │   ├── uploader_service.py
 │   ├── route_service.py
 │   ├── mission_service.py
 │   └── state_service.py
+│
 ├── utils/
+│   ├── config_utils.py
 │   ├── file_utils.py
 │   ├── time_utils.py
-│   └── config_utils.py
+│   └── app_logging.py
 ```
+
 ---
 
-## Configuration
+# Repository Structure
 
-Located in:
-
+```text
+Refrigeration-Sensor-Hub/
+├── config/
+├── data/
+│   ├── raw/
+│   ├── uploaded/
+│   └── archive/
+├── docs/
+├── logs/
+├── scripts/
+├── services/
+├── src/
+└── requirements.txt
 ```
+
+---
+
+# Runtime Configuration
+
+Configuration files:
+
+```text
 config/
 ├── app_config.json
 ├── mission.json
 ├── sensors.json
 ```
 
-### app_config.json
-
-Controls:
-
-* sampling interval
-* upload interval
-* route estimation interval
-* feature toggles (route, weather, upload)
-* file paths
-
-### mission.json:
-
-* mission ID
-* van ID
-* route destinations
-* runtime mission state
-
-### sensors.json:
-
-* sensor enable/disable
-* hardware configuration (GPIO, I2C, UART)
-
 ---
 
-## Data Pipeline
+## app_config.json
 
-### Sampling
+Controls runtime behaviour:
 
-* Sensors are sampled every 5 seconds
-#### Data includes:
-* timestamp (UTC)
-* temperature & humidity
-* door state
-* GPS position & fix status
-* power
-* weather data
+- sensor sampling interval
+- upload interval
+- route interval
+- feature enable flags
+- storage paths
+- logging paths
+- cloud backend settings
 
----
+Default design:
 
-## Local Storage (Offline-first)
-
-Data is stored as:
+```text
+Sensor sampling: 5 sec
+Cloud sync: 30 sec
+Route update: 180 sec
 ```
+
+---
+
+## mission.json
+
+Defines runtime mission state:
+
+- mission ID
+- van ID
+- route enable flag
+- destination list
+- notes
+
+Destination format:
+
+```json
+[
+  "B4 7ET",
+  "CV1 2WT",
+  {
+    "lat": 52.4068,
+    "lon": -1.5197
+  }
+]
+```
+
+---
+
+## sensors.json
+
+Defines:
+
+- enabled sensors
+- GPIO assignments
+- I2C addresses
+- UART configuration
+- future hardware expansion
+
+---
+
+# Runtime Execution Flow
+
+## Boot Chain
+
+```text
+Power On
+↓
+Raspberry Pi OS boots
+↓
+Netplan initializes networking
+↓
+NetworkManager manages interfaces
+↓
+ModemManager initializes SIM7600
+↓
+4G connection established
+↓
+systemd starts sensorhub.service
+↓
+main.py starts
+↓
+config files loaded
+↓
+sensors initialized
+↓
+main runtime loop begins
+```
+
+---
+
+# Sampling Pipeline
+
+Every 5 seconds:
+
+- read internal SHT31
+- read weather station sensors
+- read door sensor
+- read latest GPS fix
+- read latest route state
+- assemble unified JSON record
+- write to local storage
+
+---
+
+# Route Intelligence
+
+Mission-aware route estimation:
+
+- GPS-based
+- destination-aware
+- ETA estimation
+- movement-triggered updates
+- periodic refresh
+
+Default:
+
+```text
+Every 180 seconds
+```
+
+Provider:
+
+```text
+OpenRouteService
+```
+
+Environment variable:
+
+```bash
+ORS_API_KEY
+```
+
+---
+
+# Cloud Synchronization
+
+Cloud sync runs every:
+
+```text
+30 seconds
+```
+
+Implementation:
+
+```text
+Python uploader service
++
+rclone backend
++
+Google Drive remote
+```
+
+Design:
+
+- asynchronous-friendly
+- fault tolerant
+- non-blocking
+- offline-first
+
+If cloud sync fails:
+
+```text
+Local logging continues.
+```
+
+---
+
+# Data Storage
+
+Local storage:
+
+```text
 data/raw/log_YYYY-MM-DD.json
 ```
 
-Each line is a JSON object:
-```
+JSON lines format:
+
+```json
 {
   "timestamp": "...",
-  "temperature_c": 4.5,
-  "humidity_percent": 82.1,
+  "mission_id": "...",
+  "van_id": "van_01",
+
+  "inside": {
+    "temperature_c": 4.6,
+    "humidity_percent": 81.4
+  },
+
+  "weather_station": {
+    "temperature_c": 12.1,
+    "humidity_percent": 63.5,
+    "uv_index": 2.4
+  },
+
   "door_open": false,
-  "gps": {...},
-  "route": {...}
+
+  "gps": {
+    "latitude": 52.4862,
+    "longitude": -1.8904,
+    "altitude_m": 110.2,
+    "fix": true
+  },
+
+  "route": {
+    "summary": {
+      "total_distance_km": 62.1,
+      "total_duration_min": 58.4
+    }
+  },
+
+  "power": null
 }
 ```
----
-
-### Cloud Sync
-
-* Runs every 30 seconds
-* Uploads new data to Google Drive
-* Non-blocking design (system continues logging if offline)
-* Uses retry and recovery logic
 
 ---
 
-### Networking Architecture
+# Networking Architecture
 
-The system uses a layered Linux networking stack:
+Linux network stack:
+
+```text
+Netplan
+   ↓
+NetworkManager
+   ↓
+ModemManager
+   ↓
+SIM7600 USB modem
+   ↓
+4G network
 ```
-Netplan → NetworkManager → ModemManager → SIM7600 → 4G Network Interfaces
+
+Interfaces:
+
+```text
+eth0   → Ethernet
+wlan0  → Wi-Fi
+wwan0  → Mobile data
+cdc-wdm0 → modem control
 ```
 
-* eth0 → Ethernet
-* wlan0 → Wi-Fi
-* wwan0 → 4G data interface
+Characteristics:
 
-#### Key Characteristics
-
-* 4G (giffgaff) configured as primary connection
-* Ethernet acts as fallback when configured
-* Auto-reconnect enabled
-* Watchdog script ensures recovery from connection loss
-
-#### Configuration Location
-```
-/etc/NetworkManager/system-connections/
-```
+- 4G primary uplink
+- Ethernet fallback
+- auto reconnect
+- managed connection profiles
+- production headless operation
 
 ---
 
-## Installation and Setup
+# Mission Workflow
 
-### 1. Clone the repository
+Start mission:
 
 ```bash
-git clone https://github.com/legionnnnn/Refrigeration-Sensor-Hub.git
+python scripts/start_mission.py
+```
+
+Stop mission:
+
+```bash
+python scripts/stop_mission.py
+```
+
+Mission startup allows:
+
+- van selection
+- route enable/disable
+- destination entry
+- mission ID generation
+
+---
+
+# Deployment
+
+System service:
+
+```text
+services/sensorhub.service
+```
+
+Install:
+
+```bash
+sudo bash scripts/install_service.sh
+```
+
+Behaviour:
+
+- auto start on boot
+- restart on crash
+- headless operation
+- uses dedicated Python virtual environment
+
+---
+
+# Installation
+
+Clone:
+
+```bash
+git clone https://github.com/M-Foroutan-M/Refrigeration-Sensor-Hub.git
 cd Refrigeration-Sensor-Hub
+git checkout refactor/unified-runtime
 ```
 
-### 2. Create Python virtual environment
+---
+
+Create environment:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
-# For the current state run this code to activate virtual env:
+python3 -m venv ~/sensorhub-venv
 source ~/sensorhub-venv/bin/activate
 ```
 
-### 3. Install dependencies
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
 
-## Running the System
+# Manual Run
+
 ```bash
 python src/main.py
 ```
+
 ---
 
-### Auto-Start
+# Reliability Design
 
-A systemd service is provided:
-```
-services/sensorhub.service
-```
-Install:
-```bash
-sudo bash scripts/install_service.sh
-```
+The platform is intentionally resilient.
+
+Failure behaviour:
+
+- internet failure → continue logging
+- route API failure → continue logging
+- GPS fix unavailable → continue logging
+- sensor read failure → null values only
+- uploader failure → retry later
+- application crash → systemd restart
+
 ---
 
-## Author
+# Author
 
 Mohammad (Farhad) Foroutan
 Aston University
-
-### Notes
-
-This project is designed as a real-world embedded system, not a prototype script.
-All components are built with deployment, reliability, and scalability in mind.
