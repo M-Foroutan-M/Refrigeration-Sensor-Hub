@@ -67,5 +67,6 @@ class GPSSensor:
 
     def stop(self) -> None:
         self.running = False
+
         if self.serial_conn is not None:
             self.serial_conn.close()
