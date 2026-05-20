@@ -15,9 +15,11 @@
     "timeout_sec": 1
   },
   "onewire": {
-    "enabled": false,
+    "enabled": true,
     "gpio_pin": 4,
-    "device_ids": []
+    "device_ids": [
+      "28-0b2551cc5a63"
+    ]
   },
   "weather_sht31": {
     "enabled": false,

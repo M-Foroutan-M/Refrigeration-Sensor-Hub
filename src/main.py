@@ -16,7 +16,7 @@ from services.route_service import RouteService
 from sensors.door_sensor import DoorSensor
 from sensors.sht31_sensor import SHT31Sensor
 from sensors.gps_sensor import GPSSensor
-
+from sensors.onewire_sensor import OneWireTemperatureSensor
 
 def hex_to_int(address_value):
     if isinstance(address_value, int):
@@ -57,6 +57,19 @@ def safe_read_gps(gps_sensor, logger) -> Dict[str, Any]:
             "fix": False,
         }
 
+def safe_read_onewire(onewire_sensor, logger) -> Dict[str, Optional[float]]:
+    try:
+        return onewire_sensor.read()
+    except Exception as e:
+        logger.warning(f"1-Wire temperature read failed: {e}")
+
+        fallback = {}
+
+        for device_id in onewire_sensor.device_ids:
+            fallback[device_id] = None
+
+        return fallback
+
 
 def build_record(
     mission_service,
@@ -74,6 +87,10 @@ def build_record(
     if weather_sht31_sensor is not None:
         weather_data = safe_read_sht31(weather_sht31_sensor, logger, "Weather station")
 
+    onewire_data = None
+    if onewire_sensor is not None:
+        onewire_data = safe_read_onewire(onewire_sensor, logger)
+
     record = {
         "timestamp": utc_now_iso(),
         "mission_id": mission_service.get_mission_id(),
@@ -81,6 +98,7 @@ def build_record(
         "inside": {
             "temperature_c": inside_data["temperature_c"],
             "humidity_percent": inside_data["humidity_percent"],
+            "onewire_temperatures": onewire_data,
         },
         "door_open": door_open,
         "gps": gps_data,
@@ -125,6 +143,7 @@ def main():
     inside_sht31_cfg = sensors_config["inside_sht31"]
     gps_cfg = sensors_config["gps"]
     weather_sht31_cfg = sensors_config.get("weather_sht31", {"enabled": False})
+    onewire_cfg = sensors_config.get("onewire", {"enabled": False})
 
     if not door_cfg["enabled"]:
         raise RuntimeError("Door sensor is disabled in config")
@@ -154,6 +173,12 @@ def main():
             i2c_address=hex_to_int(weather_sht31_cfg.get("i2c_address", "0x45"))
         )
 
+    onewire_sensor = None
+    if onewire_cfg.get("enabled", False):
+        onewire_sensor = OneWireTemperatureSensor(
+            device_ids=onewire_cfg.get("device_ids", [])
+        )
+
     logger.info("Initializing sensors...")
     door_sensor.initialize()
     inside_sht31_sensor.initialize()
@@ -162,6 +187,10 @@ def main():
     if weather_sht31_sensor is not None:
         weather_sht31_sensor.initialize()
         logger.info("Weather station SHT31 initialized")
+
+    if onewire_sensor is not None:
+        onewire_sensor.initialize()
+        logger.info("1-Wire temperature sensor initialized")
 
     logger.info("Sensors initialized. Entering main loop.")
 
@@ -192,6 +221,7 @@ def main():
                     logger=logger,
                     latest_route=latest_route,
                     weather_sht31_sensor=weather_sht31_sensor,
+		    onewire_sensor=onewire_sensor,
                 )
 
                 json_logger.write_record(record)
