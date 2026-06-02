@@ -1,5 +1,5 @@
 {
-  "mission_id": null,
+  "mission_id": "mission_001",
   "van_id": "van_01",
   "route_enabled": true,
   "destinations": ["B5 7QU"],
