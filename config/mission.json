@@ -2,6 +2,6 @@
   "mission_id": null,
   "van_id": "van_01",
   "route_enabled": true,
-  "destinations": [],
+  "destinations": ["B5 7QU"],
   "notes": ""
 }
