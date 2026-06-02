@@ -3,4 +3,4 @@ adafruit-circuitpython-ina219
 pyserial
 RPi.GPIO
 pynmea2
-
+pymodbus
