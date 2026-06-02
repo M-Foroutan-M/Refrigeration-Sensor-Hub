@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+sensorhub-venv/
+
+# Runtime data and logs
+data/raw/
+logs/
+*.log
+
+# OS/editor files
+.DS_Store
+.vscode/
+.idea/
