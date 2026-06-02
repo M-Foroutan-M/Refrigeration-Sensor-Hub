@@ -7,8 +7,8 @@
   "log_file": "/home/pi/Refrigeration-Sensor-Hub/logs/sensorhub.log",
   "route_enabled": true,
   "weather_enabled": false,
-  "drive_upload_enabled": false,
-  "drive_remote_name": "gdrive_sensorhub",
+  "drive_upload_enabled": true,
+  "drive_remote_name": "gdrive",
   "mission_file": "/home/pi/Refrigeration-Sensor-Hub/config/mission.json",
   "sensors_file": "/home/pi/Refrigeration-Sensor-Hub/config/sensors.json"
 }
