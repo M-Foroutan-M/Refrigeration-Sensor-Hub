@@ -3,5 +3,5 @@
   "van_id": "van_01",
   "route_enabled": true,
   "destinations": ["B5 7QU"],
-  "notes": ""
+  "notes": "Test Mission"
 }
