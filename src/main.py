@@ -79,6 +79,7 @@ def build_record(
     logger,
     latest_route,
     weather_sht31_sensor=None,
+    onewire_sensor=None,
 ):
     door_open = safe_read_door(door_sensor, logger)
     inside_data = safe_read_sht31(inside_sht31_sensor, logger, "Inside")

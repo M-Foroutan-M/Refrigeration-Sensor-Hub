@@ -22,7 +22,7 @@
     ]
   },
   "weather_sht31": {
-    "enabled": false,
+    "enabled": true,
     "i2c_address": "0x45"
   },
   "uv_sensor": {
