@@ -17,6 +17,7 @@ from sensors.door_sensor import DoorSensor
 from sensors.sht31_sensor import SHT31Sensor
 from sensors.gps_sensor import GPSSensor
 from sensors.onewire_sensor import OneWireTemperatureSensor
+from sensors.uv_sensor import UVSensor
 
 def hex_to_int(address_value):
     if isinstance(address_value, int):
@@ -80,6 +81,7 @@ def build_record(
     latest_route,
     weather_sht31_sensor=None,
     onewire_sensor=None,
+    uv_sensor=None,
 ):
     door_open = safe_read_door(door_sensor, logger)
     inside_data = safe_read_sht31(inside_sht31_sensor, logger, "Inside")
@@ -91,6 +93,10 @@ def build_record(
     onewire_data = None
     if onewire_sensor is not None:
         onewire_data = safe_read_onewire(onewire_sensor, logger)
+
+    uv_data = None
+    if uv_sensor is not None:
+        uv_data = uv_sensor.read()
 
     record = {
         "timestamp": utc_now_iso(),
@@ -105,6 +111,7 @@ def build_record(
         "gps": gps_data,
         "route": latest_route,
         "weather_station": weather_data,
+        "solar_radiation": uv_data,
         "power": None,
     }
 
@@ -145,6 +152,7 @@ def main():
     gps_cfg = sensors_config["gps"]
     weather_sht31_cfg = sensors_config.get("weather_sht31", {"enabled": False})
     onewire_cfg = sensors_config.get("onewire", {"enabled": False})
+    uv_cfg = sensors_config.get("uv_sensor", {"enabled": False})
 
     if not door_cfg["enabled"]:
         raise RuntimeError("Door sensor is disabled in config")
@@ -180,6 +188,18 @@ def main():
             device_ids=onewire_cfg.get("device_ids", [])
         )
 
+    uv_sensor = None
+    if uv_cfg.get("enabled", False):
+        uv_sensor = UVSensor(
+            port=uv_cfg["port"],
+            baudrate=uv_cfg.get("baudrate", 9600),
+            device_id=uv_cfg.get("device_id", 1),
+            register_address=uv_cfg.get("register_address", 0),
+            register_count=uv_cfg.get("register_count", 1),
+            timeout_sec=uv_cfg.get("timeout_sec", 1),
+            unit=uv_cfg.get("unit", "W/m2"),
+        )
+
     logger.info("Initializing sensors...")
     door_sensor.initialize()
     inside_sht31_sensor.initialize()
@@ -192,6 +212,9 @@ def main():
     if onewire_sensor is not None:
         onewire_sensor.initialize()
         logger.info("1-Wire temperature sensor initialized")
+
+    if uv_sensor is not None:
+        logger.info("UV / pyranometer sensor initialized")
 
     logger.info("Sensors initialized. Entering main loop.")
 
@@ -222,7 +245,8 @@ def main():
                     logger=logger,
                     latest_route=latest_route,
                     weather_sht31_sensor=weather_sht31_sensor,
-		    onewire_sensor=onewire_sensor,
+                    onewire_sensor=onewire_sensor,
+                    uv_sensor=uv_sensor,
                 )
 
                 json_logger.write_record(record)

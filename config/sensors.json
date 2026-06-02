@@ -26,7 +26,14 @@
     "i2c_address": "0x45"
   },
   "uv_sensor": {
-    "enabled": false
+    "enabled": true,
+    "type": "modbus_pyranometer",
+    "port": "/dev/serial/by-id/usb-WCH.CN_USB_Quad_Serial_BCD9BFABCD-if00",
+    "baudrate": 9600,
+    "device_id": 1,
+    "register_address": 0,
+    "register_count": 1,
+    "unit": "W/m2"
   },
   "power_sensor": {
     "enabled": false,
