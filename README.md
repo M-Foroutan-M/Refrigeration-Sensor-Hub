@@ -4,18 +4,18 @@
 
 Refrigeration-Sensor-Hub is a modular embedded IoT edge platform designed for deployment inside refrigerated transport vehicles.
 
-The system continuously acquires environmental, mission, and positional telemetry from the vehicle, stores structured timestamped data locally, and synchronizes records to cloud storage over a resilient 4G connection.
+The system continuously acquires environmental, mission, and positional telemetry from the vehicle, stores structured timestamped data locally, and synchronizes records to Google Drive over a 4G connection.
 
 The architecture is designed for real-world field deployment, prioritizing:
 
-- offline-first operation
-- autonomous recovery
-- modular extensibility
-- mission-aware routing intelligence
-- headless unattended execution
-- future refrigeration energy optimization
+* offline-first operation
+* autonomous recovery
+* modular extensibility
+* mission-aware routing intelligence
+* headless unattended execution
+* future refrigeration energy optimization
 
-This is not a prototype script collection; it is a structured deployable embedded monitoring platform.
+This is not a prototype script collection. It is a structured deployable embedded monitoring platform.
 
 ---
 
@@ -23,24 +23,28 @@ This is not a prototype script collection; it is a structured deployable embedde
 
 Current operational objectives:
 
-- Monitor refrigerated compartment conditions
-- Monitor external weather conditions
-- Track vehicle position and GPS fix status
-- Detect door open/close state
-- Estimate mission route progress and ETA
-- Log all telemetry locally in structured JSON
-- Synchronize data to cloud storage every 30 seconds
-- Operate autonomously after power-on
-- Remain functional during internet outages
+* Monitor refrigerated compartment temperature and humidity
+* Monitor additional internal temperature using a DS18B20 1-Wire probe
+* Monitor external/weather temperature and humidity
+* Monitor solar radiation using a pyranometer
+* Track vehicle position and GPS fix status
+* Detect door open/close state
+* Estimate mission route progress and ETA when a destination is configured
+* Log all telemetry locally in structured JSON Lines format
+* Synchronize data to Google Drive every 30 seconds
+* Operate autonomously after power-on using a systemd service
+* Remain functional during internet outages
 
 Future objectives:
 
-- Battery monitoring
-- solar PV monitoring
-- refrigeration compressor telemetry
-- cloud-to-edge command/control
-- refrigeration load optimization
-- predictive energy-aware control
+* Battery monitoring
+* Solar PV monitoring
+* INA219-based power telemetry
+* Refrigeration compressor telemetry
+* Cloud-to-edge command/control
+* Refrigeration load optimization
+* Predictive energy-aware control
+* Operator mission start/stop helper scripts
 
 ---
 
@@ -50,7 +54,8 @@ Future objectives:
 
 ```text
 Raspberry Pi 4 Model B
-Raspberry Pi OS Lite (headless)
+Raspberry Pi OS Lite
+Headless operation
 ```
 
 ---
@@ -58,10 +63,10 @@ Raspberry Pi OS Lite (headless)
 ## Connectivity
 
 ```text
-SIM7600G-H 4G LTE USB modem
-giffgaff SIM
-Ethernet fallback support
-Wi-Fi management support
+SIM7600 4G LTE USB modem
+Tailscale remote access
+Google Drive upload via rclone
+Ethernet/Wi-Fi fallback support where available
 ```
 
 ---
@@ -71,9 +76,16 @@ Wi-Fi management support
 ### Internal Refrigeration Monitoring
 
 ```text
-SHT31
-I2C
-Temperature + Humidity
+Inside SHT31
+I2C address: 0x44
+Temperature + humidity
+```
+
+```text
+DS18B20 1-Wire temperature sensor
+GPIO: 4
+Current device ID: 28-0b2551cc5a63
+Additional internal temperature probe
 ```
 
 ---
@@ -82,7 +94,9 @@ Temperature + Humidity
 
 ```text
 GPS module
-UART / NMEA
+UART/NMEA
+Port: /dev/serial0
+Baudrate: 9600
 ```
 
 ---
@@ -91,7 +105,8 @@ UART / NMEA
 
 ```text
 Magnetic contact sensor
-GPIO
+GPIO: 17
+Door open/closed state
 ```
 
 ---
@@ -100,13 +115,16 @@ GPIO
 
 ```text
 External SHT31
-I2C
-Temperature + Humidity
+I2C address: 0x45
+External temperature + humidity
 ```
 
 ```text
 PYR20 Pyranometer
-Solar / UV radiation
+USB / RS485 Modbus RTU
+Solar radiation in W/m2
+Stable port:
+/dev/serial/by-id/usb-WCH.CN_USB_Quad_Serial_BCD9BFABCD-if00
 ```
 
 ---
@@ -114,7 +132,6 @@ Solar / UV radiation
 ## Planned Sensors
 
 ```text
-DS18B20 1-Wire temperature probes
 INA219 power monitoring
 Battery telemetry
 Solar PV telemetry
@@ -145,11 +162,10 @@ src/
 │   ├── mission_service.py
 │   └── state_service.py
 │
-├── utils/
-│   ├── config_utils.py
-│   ├── file_utils.py
-│   ├── time_utils.py
-│   └── app_logging.py
+└── utils/
+    ├── config_utils.py
+    ├── time_utils.py
+    └── app_logging.py
 ```
 
 ---
@@ -159,16 +175,32 @@ src/
 ```text
 Refrigeration-Sensor-Hub/
 ├── config/
+│   ├── app_config.json
+│   ├── mission.json
+│   └── sensors.json
+│
 ├── data/
 │   ├── raw/
 │   ├── uploaded/
 │   └── archive/
+│
 ├── docs/
+│   ├── data_schema.md
+│   ├── deployment.md
+│   ├── hardware_map.md
+│   └── roadmap.md
+│
 ├── logs/
 ├── scripts/
+│   ├── install_service.sh
+│   └── sync_drive.sh
+│
 ├── services/
+│   └── sensorhub.service
+│
 ├── src/
-└── requirements.txt
+├── requirements.txt
+└── README.md
 ```
 
 ---
@@ -181,7 +213,7 @@ Configuration files:
 config/
 ├── app_config.json
 ├── mission.json
-├── sensors.json
+└── sensors.json
 ```
 
 ---
@@ -190,20 +222,33 @@ config/
 
 Controls runtime behaviour:
 
-- sensor sampling interval
-- upload interval
-- route interval
-- feature enable flags
-- storage paths
-- logging paths
-- cloud backend settings
+* sensor sampling interval
+* upload interval
+* route interval
+* storage paths
+* logging paths
+* Google Drive upload enable/disable flag
+* rclone remote name
+* config file locations
 
-Default design:
+Current operational design:
 
 ```text
-Sensor sampling: 5 sec
-Cloud sync: 30 sec
-Route update: 180 sec
+Sensor sampling: 5 seconds
+Google Drive upload: 30 seconds
+Route update interval: 180 seconds
+```
+
+Current upload remote:
+
+```text
+gdrive
+```
+
+Current upload target:
+
+```text
+gdrive:Refrigeration-Sensor-Hub
 ```
 
 ---
@@ -212,11 +257,23 @@ Route update: 180 sec
 
 Defines runtime mission state:
 
-- mission ID
-- van ID
-- route enable flag
-- destination list
-- notes
+* mission ID
+* van ID
+* route enable flag
+* destination list
+* notes
+
+Default state:
+
+```json
+{
+  "mission_id": null,
+  "van_id": "van_01",
+  "route_enabled": true,
+  "destinations": [],
+  "notes": ""
+}
+```
 
 Destination format:
 
@@ -231,17 +288,34 @@ Destination format:
 ]
 ```
 
+If the destination list is empty, the system continues normal sensor logging and the `route` field remains `null`.
+
 ---
 
 ## sensors.json
 
 Defines:
 
-- enabled sensors
-- GPIO assignments
-- I2C addresses
-- UART configuration
-- future hardware expansion
+* enabled sensors
+* GPIO assignments
+* I2C addresses
+* UART configuration
+* 1-Wire device IDs
+* USB/Modbus pyranometer settings
+* future hardware expansion
+
+Current active sensor configuration includes:
+
+```text
+door_sensor
+inside_sht31
+gps
+onewire
+weather_sht31
+uv_sensor
+```
+
+`power_sensor` is currently disabled and reserved for future INA219 integration.
 
 ---
 
@@ -250,27 +324,27 @@ Defines:
 ## Boot Chain
 
 ```text
-Power On
+Power on
 ↓
 Raspberry Pi OS boots
 ↓
-Netplan initializes networking
+Network stack starts
 ↓
-NetworkManager manages interfaces
-↓
-ModemManager initializes SIM7600
-↓
-4G connection established
+SIM7600 modem provides 4G connection
 ↓
 systemd starts sensorhub.service
 ↓
 main.py starts
 ↓
-config files loaded
+config files are loaded
 ↓
-sensors initialized
+sensors are initialized
 ↓
 main runtime loop begins
+↓
+records are logged locally
+↓
+records are uploaded to Google Drive
 ```
 
 ---
@@ -279,31 +353,29 @@ main runtime loop begins
 
 Every 5 seconds:
 
-- read internal SHT31
-- read weather station sensors
-- read door sensor
-- read latest GPS fix
-- read latest route state
-- assemble unified JSON record
-- write to local storage
+* read internal SHT31
+* read DS18B20 1-Wire temperature sensor
+* read external/weather SHT31
+* read pyranometer solar radiation
+* read door sensor
+* read GPS data
+* check latest route state
+* assemble unified JSON record
+* write record to local storage
+* upload to Google Drive when upload interval is reached
 
 ---
 
 # Route Intelligence
 
-Mission-aware route estimation:
+Mission-aware route estimation is supported.
 
-- GPS-based
-- destination-aware
-- ETA estimation
-- movement-triggered updates
-- periodic refresh
+Route updates require:
 
-Default:
-
-```text
-Every 180 seconds
-```
+* `route_enabled` set to `true`
+* non-empty `destinations` list in `config/mission.json`
+* valid GPS fix
+* `ORS_API_KEY` stored locally in `.env`
 
 Provider:
 
@@ -311,10 +383,46 @@ Provider:
 OpenRouteService
 ```
 
-Environment variable:
+Local environment file:
 
-```bash
-ORS_API_KEY
+```text
+.env
+```
+
+Example:
+
+```text
+ORS_API_KEY=your_key_here
+```
+
+The `.env` file is ignored by Git and must not be committed.
+
+When a route is calculated, the JSON record includes:
+
+```json
+"route": {
+  "provider": "openrouteservice",
+  "updated": true,
+  "legs": [
+    {
+      "leg_name": "leg_1",
+      "from": {
+        "lat": 52.487015,
+        "lon": -1.890435
+      },
+      "to": {
+        "lat": 52.486637,
+        "lon": -1.890952
+      },
+      "distance_km": 0.19,
+      "duration_min": 0.4
+    }
+  ],
+  "summary": {
+    "total_distance_km": 0.19,
+    "total_duration_min": 0.4
+  }
+}
 ```
 
 ---
@@ -337,18 +445,33 @@ rclone backend
 Google Drive remote
 ```
 
-Design:
+Current remote:
 
-- asynchronous-friendly
-- fault tolerant
-- non-blocking
-- offline-first
+```text
+gdrive
+```
+
+Current destination:
+
+```text
+gdrive:Refrigeration-Sensor-Hub
+```
 
 If cloud sync fails:
 
 ```text
 Local logging continues.
+The service keeps running.
+Upload is retried later.
 ```
+
+Manual upload helper:
+
+```bash
+./scripts/sync_drive.sh
+```
+
+This script is for manual testing/debugging only. Normal automatic upload is handled by `src/services/uploader_service.py`.
 
 ---
 
@@ -360,43 +483,61 @@ Local storage:
 data/raw/log_YYYY-MM-DD.json
 ```
 
-JSON lines format:
+Format:
+
+```text
+JSON Lines
+```
+
+Each line is one full telemetry record.
+
+Example:
 
 ```json
 {
-  "timestamp": "...",
-  "mission_id": "...",
+  "timestamp": "2026-06-02T18:32:04.287689+00:00",
+  "mission_id": null,
   "van_id": "van_01",
-
   "inside": {
-    "temperature_c": 4.6,
-    "humidity_percent": 81.4
+    "temperature_c": 22.31,
+    "humidity_percent": 46.51,
+    "onewire_temperatures": {
+      "28-0b2551cc5a63": 22.94
+    }
   },
-
-  "weather_station": {
-    "temperature_c": 12.1,
-    "humidity_percent": 63.5,
-    "uv_index": 2.4
-  },
-
   "door_open": false,
-
   "gps": {
     "latitude": 52.4862,
     "longitude": -1.8904,
     "altitude_m": 110.2,
     "fix": true
   },
-
-  "route": {
-    "summary": {
-      "total_distance_km": 62.1,
-      "total_duration_min": 58.4
-    }
+  "route": null,
+  "weather_station": {
+    "temperature_c": 22.79,
+    "humidity_percent": 46.9
   },
-
+  "solar_radiation": {
+    "solar_radiation_w_m2": 9,
+    "unit": "W/m2",
+    "status": "ok"
+  },
   "power": null
 }
+```
+
+Field notes:
+
+```text
+inside.temperature_c              Internal SHT31 temperature
+inside.humidity_percent           Internal SHT31 humidity
+inside.onewire_temperatures        DS18B20 readings by device ID
+door_open                          Door state
+gps                                GPS position and fix state
+route                              Route/ETA snapshot or null
+weather_station                    External SHT31 readings
+solar_radiation                    Pyranometer reading in W/m2
+power                              Reserved for future power monitoring
 ```
 
 ---
@@ -406,56 +547,79 @@ JSON lines format:
 Linux network stack:
 
 ```text
-Netplan
-   ↓
 NetworkManager
-   ↓
+↓
 ModemManager
-   ↓
+↓
 SIM7600 USB modem
-   ↓
+↓
 4G network
 ```
 
-Interfaces:
+Used for:
 
-```text
-eth0   → Ethernet
-wlan0  → Wi-Fi
-wwan0  → Mobile data
-cdc-wdm0 → modem control
+* Tailscale remote SSH access
+* Google Drive upload through rclone
+* OpenRouteService route/ETA requests
+
+Remote access examples:
+
+```bash
+ssh pi@100.76.109.79
 ```
 
-Characteristics:
+or when Tailscale DNS is healthy:
 
-- 4G primary uplink
-- Ethernet fallback
-- auto reconnect
-- managed connection profiles
-- production headless operation
+```bash
+ssh pi@pi-sensorhub
+```
 
 ---
 
 # Mission Workflow
 
-Start mission:
+Current mission workflow is manual through:
 
-```bash
-python scripts/start_mission.py
+```text
+config/mission.json
 ```
 
-Stop mission:
+Default non-route mode:
 
-```bash
-python scripts/stop_mission.py
+```json
+{
+  "mission_id": null,
+  "van_id": "van_01",
+  "route_enabled": true,
+  "destinations": [],
+  "notes": ""
+}
 ```
 
-Mission startup allows:
+Example route mission:
 
-- van selection
-- route enable/disable
-- destination entry
-- mission ID generation
+```json
+{
+  "mission_id": "mission_001",
+  "van_id": "van_01",
+  "route_enabled": true,
+  "destinations": ["B4 7ET"],
+  "notes": "Example mission"
+}
+```
+
+After editing `mission.json`, restart the service:
+
+```bash
+sudo systemctl restart sensorhub.service
+```
+
+Future mission workflow may include:
+
+* operator mission start script
+* operator mission stop script
+* destination postcode prompt
+* automatic mission ID generation
 
 ---
 
@@ -467,18 +631,60 @@ System service:
 services/sensorhub.service
 ```
 
-Install:
+Installed systemd service:
 
-```bash
-sudo bash scripts/install_service.sh
+```text
+/etc/systemd/system/sensorhub.service
 ```
 
-Behaviour:
+Install or update the service:
 
-- auto start on boot
-- restart on crash
-- headless operation
-- uses dedicated Python virtual environment
+```bash
+chmod +x scripts/install_service.sh
+./scripts/install_service.sh
+```
+
+Check service status:
+
+```bash
+sudo systemctl status sensorhub.service --no-pager
+```
+
+Check if the service is active:
+
+```bash
+sudo systemctl is-active sensorhub.service
+```
+
+Expected:
+
+```text
+active
+```
+
+Check if the service is enabled on boot:
+
+```bash
+sudo systemctl is-enabled sensorhub.service
+```
+
+Expected:
+
+```text
+enabled
+```
+
+Restart service:
+
+```bash
+sudo systemctl restart sensorhub.service
+```
+
+View live logs:
+
+```bash
+sudo journalctl -u sensorhub.service -f
+```
 
 ---
 
@@ -491,8 +697,6 @@ git clone https://github.com/M-Foroutan-M/Refrigeration-Sensor-Hub.git
 cd Refrigeration-Sensor-Hub
 git checkout refactor/unified-runtime
 ```
-
----
 
 Create environment:
 
@@ -507,12 +711,59 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
+Install service:
+
+```bash
+chmod +x scripts/install_service.sh
+./scripts/install_service.sh
+```
+
 ---
 
 # Manual Run
 
+Manual run is useful for debugging.
+
 ```bash
-python src/main.py
+source ~/sensorhub-venv/bin/activate
+cd ~/Refrigeration-Sensor-Hub
+python3 src/main.py
+```
+
+For normal operation, use the systemd service instead.
+
+---
+
+# Useful Commands
+
+Check Git state:
+
+```bash
+git status
+```
+
+Check latest commits:
+
+```bash
+git log --oneline --decorate -5
+```
+
+Check latest local records:
+
+```bash
+tail -n 5 data/raw/*.json
+```
+
+Check Google Drive upload:
+
+```bash
+rclone ls gdrive:Refrigeration-Sensor-Hub | tail -n 20
+```
+
+Check service logs:
+
+```bash
+sudo journalctl -u sensorhub.service -n 80 --no-pager
 ```
 
 ---
@@ -523,12 +774,53 @@ The platform is intentionally resilient.
 
 Failure behaviour:
 
-- internet failure → continue logging
-- route API failure → continue logging
-- GPS fix unavailable → continue logging
-- sensor read failure → null values only
-- uploader failure → retry later
-- application crash → systemd restart
+* internet failure → continue local logging
+* route API failure → continue logging
+* GPS fix unavailable → continue logging with `fix: false`
+* sensor read failure → log `null` or error status for that sensor
+* uploader failure → retry later
+* application crash → systemd restarts service
+
+---
+
+# Current Project Status
+
+Working:
+
+```text
+Door sensor
+GPS
+Inside SHT31
+Weather SHT31
+DS18B20 1-Wire temperature sensor
+PYR20 pyranometer
+Local JSON logging
+Google Drive upload
+systemd auto-start service
+OpenRouteService route/ETA test
+```
+
+Not yet implemented:
+
+```text
+INA219 power monitoring
+Battery telemetry
+Solar PV telemetry
+Cooling compressor telemetry
+Cloud command receiver
+Compressor/load control
+Operator mission start/stop scripts
+```
+
+Current tested chain:
+
+```text
+boot/systemd
+→ main.py
+→ sensors
+→ JSON log
+→ Google Drive upload
+```
 
 ---
 
